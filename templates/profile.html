@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+#wrapper {
+  max-width: 1050px;
+  margin: 60px auto 60px auto;
+  background-color:#ffecb3;
+}
+#outer {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+.itemwrapper {
+  display: table-cell;
+  vertical-align: top;
+  width: 100%;
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+</style>
+
+
+<div class="w-auto p-3" style="background-color: #fff0b3;text-align:center;margin:2%;"><h3>Hello {{ session['username'] }}</h3><br>
+    <h4>Welcome to your profile</h4>
+
+<br>
+    <h3> Want to test your knowledge on various categories? </h3>
+    <button type="button" id="b1" class="btn btn-outline-primary" style="margin:2%;" >
+    Take a quiz now</button><br>
+    choose a quiz category, your questions will be based on the genre you choose.<br><br>
+    <a href="/quiz/mythology"><button type="button" id="mythology" class="btn btn-primary btn-sm">Mythology</button></a>
+    <a href="/quiz/current affairs"><button type="button" id="current affairs" class="btn btn-secondary btn-sm">current affairs</button></a>
+    <a href="/quiz/entertainment"><button type="button" id="entertainment" class="btn btn-success btn-sm">entertainment</button></a>
+    <a href="/quiz/science"><button type="button" id="science" class="btn btn-danger btn-sm">science</button></a>
+    <a href="/quiz/health"><button type="button" id="Health" class="btn btn-info btn-sm">Health</button></a>
+<br>
+</div>
+
+{% if not user %}
+    <div class="w-auto p-3" style="background-color: #eee;text-align:center;">
+    Your scores will display here ,once you complete at least a quiz
+    </div>
+{% else %}
+
+<h4 style="text-align:center;">Your Score Table</h4>
+<h6 style="text-align:center;"> Scores in order from the first quiz to the latest quiz</h6><br>
+<table class="table table-success " style="margin : auto;width: 80%;">
+  <thead>
+    <tr>
+      <th scope="col">Sr no.</th>
+        <th scope="col">Slot_id</th>
+        <th scope="col">Quiz genre</th>
+      <th scope="col">Score</th>
+        <th scope="col">Quiz date</th>
+        <th scope="col">Details</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for slot, score, genre, date in final_list %}
+    <tr>
+      <td>{{loop.index}}</td>
+        <td>{{slot}}</td>
+        <td>{{genre}}</td>
+      <td>{{score}}</td>
+        <td>{{date}}</td>
+        <td><a href="/details/{{session['id']}}/{{genre}}/{{slot}}">view details</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+<br>
+<hr>
+{% if not user %}
+    <div class="w-auto p-3" style="background-color: #eee;text-align:center;">
+    Your scores based genre will display here ,once you complete at least a quiz
+    </div>
+{% else %}
+<h4 style="text-align:center;">Your scores category wise</h4>
+    <br>
+
+<table class="table table-warning" style="margin:auto;width: 80%;">
+  <thead>
+    <tr>
+        <th>Quiz genre</th>
+      <th>Your Score</th>
+        <th>Total</th>
+        <th>performance(%)</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for category in query_wise %}
+    <tr>
+        {% for categories in category %}
+        <td>{{categories}}</td>
+      {% endfor %}
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+<br>
+<hr>
+{% if not user %}
+    <div class="w-auto p-3" style="background-color: #eee;text-align:center;">
+    Your performance chart will display here ,once you complete at least a quiz
+    </div>
+{% else %}
+<h4 style="text-align:center;">Performance chart</h4>
+
+ <div id="wrapper">
+  <div id="outer">
+    <div class="itemwrapper">
+      <img src="data:image/png;base64, {{ plot }}" alt="bag1    " />
+    </div>
+    <div class="itemwrapper">
+      <img src="data:image/png;base64, {{ plot_ui }}" alt="pen1" />
+    </div>
+  </div>
+</div>
+
+{% endif %}
+<br>
+<script>
+let input = document.getElementById('b1')
+let button = document.getElementById("mythology");
+let button1 = document.getElementById("current affairs");
+let button2 = document.getElementById("entertainment");
+let button3 = document.getElementById("science");
+let button4 = document.getElementById("Health");
+
+button.disabled = true;
+button1.disabled = true;
+button2.disabled = true;
+button3.disabled = true;
+button4.disabled = true;
+
+input.addEventListener("click", stateHandle);
+function stateHandle() {
+        button.disabled = false;
+        button1.disabled = false;
+        button2.disabled = false;
+        button3.disabled = false;
+        button4.disabled = false;
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- On rows -->
+<br>
+<h3 style="text-align:center";>Quiz details for slot id {{slot}}</h3><br>
+
+<div class="table-responsive" style="margin:2%;">
+<table class="table">
+<thead>
+    <tr>
+      <th scope="col">Sr no</th>
+      <th scope="col">Question</th>
+      <th scope="col">Your answer</th>
+      <th scope="col">Correct answer</th>
+        <th scope="col">Score</th>
+    </tr>
+  </thead>
+    <tbody>
+    {% for ques, ans, user_ans in final%}
+<tr>
+<td class="table-primary">{{loop.index}}</td>
+  <td class="table-secondary">{{ques}}</td>
+  <td class="table-success">{{user_ans}}</td>
+  <td class="table-info">{{ans}}</td>
+    {% if ans==user_ans %}
+  <td class="table-warning">1</td>
+    {% else %}
+    <td class="table-warning">0</td>
+    {% endif %}
+</tr>
+    {% endfor %}
+    </tbody>
+</table></div>
+<br>
+<a href="/profile/{{session['id']}}"><button type="button" style="margin:2%;" id="Health" class="btn btn-info">back</button></a>
+{% endblock %}
